@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WoofUI</string>
+    <string name="title_activity_login_page">LoginPage</string>
+    <string name="button">Button</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

@@ -10,7 +10,14 @@
     app:cardUseCompatPadding="true"
 
     >
+<TextView
 
+    android:id="@+id/hiddenId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:visibility="gone"
+    />
     <android.support.constraint.ConstraintLayout
         android:padding="5dp"
         android:layout_width="match_parent"
@@ -76,12 +83,13 @@
 
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/request"
             android:layout_width="75dp"
             android:layout_height="36dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+
             android:backgroundTint="@color/colorPrimary"
             android:text="REQUEST"
             android:textColorLink="@color/colorAccent"

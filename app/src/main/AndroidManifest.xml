@@ -30,7 +30,7 @@
         <activity android:name=".SignUpDetails" />
         <activity android:name=".HomeActivity"></activity>
         <activity android:name=".MateActivity"></activity>
-        
+        <activity android:name=".WalkActivity" />
     </application>
 
 </manifest>

@@ -56,6 +56,11 @@ public class HomeActivity extends AppCompatActivity {
                         Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
                         startActivity(history);
                         break;
+                    case R.id.DogWalk:
+                        Intent dogWalk = new Intent(getApplicationContext(),WalkActivity.class);
+                        startActivity(dogWalk);
+                        break;
+
                 }
                 return false;
         }

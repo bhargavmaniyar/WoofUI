@@ -7,7 +7,11 @@
     <string name="postWalk_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.walkinfo</string>
     <string name="availableWalkList_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.walkinfo/availableWalkList</string>
     <string name="requestedWalkList_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.walkreq/requestedWalkList</string>
+    <string name="requestAWalk_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.walkreq</string>
     <string name="pendingRequestWalkList_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.walkreq/pendingRequestWalkList</string>
+    <string name="picUpload_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.dogdetails/upload</string>
+    <string name="dogDetails_api">http://172.20.100.132:8080/WoofNewService/webresources/webwoof.dogdetails/ownerId</string>
+    <string name="image_url">http://172.20.100.132:8080/WoofNewService/images/</string>
 
     <string name="postMate_api">http://localhost:8080/WoofNewService/webresources/webwoof.mateinfo</string>
     <string name="availableMateList_api">http://localhost:8080/WoofNewService/webresources/webwoof.mateinfo/availableMateList</string>

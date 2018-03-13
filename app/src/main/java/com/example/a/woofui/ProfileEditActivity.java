@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.toolbox.Volley;
+import com.example.a.api.ApiVolley;
+
 import java.io.FileDescriptor;
 import java.io.IOException;
 
@@ -28,6 +31,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
         getIntent();
+
         buttonEditPhoto = (Button) findViewById(R.id.edit_photo_button);
     }
 
@@ -62,6 +66,11 @@ public class ProfileEditActivity extends AppCompatActivity {
             Bitmap bmp = null;
             try {
                 bmp = getBitmapFromUri(selectedImage);
+
+                ApiVolley api=new ApiVolley(getApplicationContext());
+                api.uploadImage(this, bmp);
+
+
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

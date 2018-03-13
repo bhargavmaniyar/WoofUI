@@ -7,7 +7,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
+import com.android.volley.Request;
 import com.example.a.api.ApiVolley;
 import com.example.a.model.DogDetails;
 import com.example.a.model.WalkInfo;
@@ -46,79 +49,111 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
     Calendar calendar=Calendar.getInstance();
     ArrayList<String> list=new ArrayList<>();
     ArrayList<Integer> idList=new ArrayList<>();
+    WalkInfo walkInfo;
+    ArrayAdapter<String> adapter;
 
     @Override
     public void onClick(final View view) {
 
-        switch(view.getId())
-        {
+        switch (view.getId()) {
 
-            case  R.id.date:
-                DatePickerDialog.OnDateSetListener dateSetListener= new DatePickerDialog.OnDateSetListener(){
+            case R.id.date:
+                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                        calendar.set(Calendar.YEAR,y);
-                        calendar.set(Calendar.MONTH,m);
-                        calendar.set(Calendar.DATE,d);
-                        calendar.set(Calendar.DATE,d);
+                        calendar.set(Calendar.YEAR, y);
+                        calendar.set(Calendar.MONTH, m);
+                        calendar.set(Calendar.DATE, d);
+                        calendar.set(Calendar.DATE, d);
                         date.setText(new SimpleDateFormat("dd-MM-yyy").format(calendar.getTime()));
 
                     }
                 };
-                DatePickerDialog datePicker= new DatePickerDialog(getContext(),dateSetListener,
-                        calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
-                        datePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+                DatePickerDialog datePicker = new DatePickerDialog(getContext(), dateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 datePicker.setTitle("Select Date");
                 datePicker.show();
                 break;
             case R.id.fromTime:
             case R.id.toTime:
-                TimePickerDialog.OnTimeSetListener timeSetListener=new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int h, int m) {
-                        EditText text=(EditText)view;
-                        text.setText(h +":" +m);
+                        EditText text = (EditText) view;
+                        text.setText(h + ":" + m);
 
 
                     }
                 };
-                TimePickerDialog timePickerDialog=new TimePickerDialog(getActivity(),timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar. MINUTE),true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
 
                 break;
             case R.id.postBtn:
-                    try {
-                        postWalkInfo();
-                    }catch (Exception e)
-                    {
+                try {
+                    postWalkInfo();
+                } catch (Exception e) {
+                    Log.e("POSTWalkDialog", e.getMessage());
+                    Snackbar.make(date, "Please fill all the details", Snackbar.LENGTH_SHORT).show();
 
-                    }
+                }
 
         }
     }
+        public void populateDD(List<DogDetails> lst)
+        {
+            //ist<String> lst=new ArrayList<>();
+            list.add("Select Dog");
+            idList.add(0);
+            for (DogDetails d:lst) {
+                list.add(d.getName());
+                idList.add(d.getId());
+
+            }
+
+            adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,list);
+
+
+            dogs.setAdapter(adapter);
+
+            adapter.notifyDataSetChanged();
+
+        }
+
 
     public  void postWalkInfo() throws Exception
     {
         ApiVolley api=new ApiVolley(getContext());
-        WalkInfo walkInfo=new WalkInfo();
+
         DogDetails dogDetails=new DogDetails();
         dogDetails.setId(idList.get(list.indexOf(dogs.getSelectedItem())));
         walkInfo.setDogId(dogDetails);
         SimpleDateFormat frmt=new SimpleDateFormat("dd-MM-yyyy");
 
+
         Date dte=frmt.parse(date.getText().toString().trim());
 
         walkInfo.setWalkInfoDate(dte);
-        api.postDogWalk((WalkActivity)getActivity(),walkInfo);
+
+        int method= Request.Method.POST;
+
+        if(walkInfo.getWalkInfoId()!=null)
+            method=Request.Method.PUT;
+        api.postDogWalk((PostWalk)getActivity().getSupportFragmentManager().findFragmentByTag("postWalk"),walkInfo,method);
+
         this.dismiss();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.post_walk_info,null);
+        walkInfo=new WalkInfo();
         builder.setView(v);
         date = (EditText) v.findViewById(R.id.date);
         toTime = (EditText) v.findViewById(R.id.toTime);
@@ -131,9 +166,13 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         dogs=(Spinner)v.findViewById(R.id.spinner);
         postBtn.setOnClickListener(this);
         //SpinnerAdapter adapter=dogs.getAdapter();
-
-        Gson gson=new Gson();
         SharedPreferences sharedPreferences=getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        //Integer.valueOf(sharedPreferences.getString("ownerId")
+        ApiVolley api=new ApiVolley(getContext());
+        api.getDogDetailsDD(this,1);
+        Gson gson=new Gson();
+
         String json=sharedPreferences.getString(getString(R.string.dogDetails),null);
         if(json!=null)
         {
@@ -142,20 +181,21 @@ public class PostWalkInfo extends DialogFragment implements View.OnClickListener
         }
         else
         {
-            idList.add(1);
-            idList.add(2);
 
-            list.add("Dog1");
-            list.add("Dog2");
 
 
         }
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,list);
 
+        if(getArguments()!=null)
+        {
+            String[] ip=getArguments().getStringArray("walkInfo");
+            dogs.setSelection(Integer.valueOf(ip[1].trim()));
 
-        dogs.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            walkInfo.setWalkInfoId(Integer.valueOf(ip[0]));
+            date.setText(ip[2]);
+
+        }
         return builder.create();
     }
 }

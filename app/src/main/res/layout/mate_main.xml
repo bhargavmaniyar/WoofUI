@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawerlayout1"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/con"
 
 
     >
 
-    <Toolbar
+<!--<include layout="@layout/toolbar"-->
+    <!--android:id="@+id/toolbar_mate"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/container"-->
+
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--&gt;</include>-->
+
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_mate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,10 +38,8 @@
         app:layout_constraintBottom_toTopOf="@+id/container"
 
         app:layout_constraintTop_toTopOf="parent"
-        >
+        />
 
-
-    </Toolbar>
 
 
     <FrameLayout
@@ -50,7 +66,7 @@
 
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container"
+
          />
 
 
@@ -121,3 +137,17 @@
 
 
 </android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/activity_home"/>
+    <!--<android.support.design.widget.NavigationView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:menu="@menu/navigation_menu"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--app:headerLayout="@layout/nav_header"-->
+        <!--android:id="@+id/navigation">-->
+
+    <!--</android.support.design.widget.NavigationView>-->
+
+</android.support.v4.widget.DrawerLayout>

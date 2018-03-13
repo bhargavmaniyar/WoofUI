@@ -1,5 +1,8 @@
 package com.example.a.woofui;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,23 +24,25 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initInstances();
+        //setContentView(R.layout.activity_home);
+       // initInstances();
     }
 
-    private void initInstances(){
-        toolBar = (Toolbar) findViewById(R.id.act_toolbar);
+
+    public void initInstances(final int drawerlayout, int toolbar, final String className){
+        toolBar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        drawerLayout = (DrawerLayout) findViewById(drawerlayout);
         mToggle = new ActionBarDrawerToggle(this,drawerLayout,toolBar,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         navigation = (NavigationView) findViewById(R.id.navigation);
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawers();
                 int id = item.getItemId();
                 switch (id){
                     case R.id.Home:
@@ -49,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.DogMate:
+
                         Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
                         startActivity(dogMate);
                         break;
@@ -57,8 +63,17 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(history);
                         break;
                     case R.id.DogWalk:
-                        Intent dogWalk = new Intent(getApplicationContext(),WalkActivity.class);
-                        startActivity(dogWalk);
+                        {
+                            //Toast.makeText(getApplicationContext(),className,Toast.LENGTH_SHORT).show();
+                            if(!className.equals(WalkActivity.class.getName().toLowerCase()))
+                            {
+                            Intent dogWalk = new Intent(getApplicationContext(),WalkActivity.class);
+                            startActivity(dogWalk);
+                            }
+
+
+                        }
+
                         break;
 
                 }

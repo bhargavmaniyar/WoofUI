@@ -47,6 +47,7 @@ public class AvailableWalk extends Fragment {
 
 
 }
+
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements View.OnClickListener{
         @Override
         public void onClick(View view) {

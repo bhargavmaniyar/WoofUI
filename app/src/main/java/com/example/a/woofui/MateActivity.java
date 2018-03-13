@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -27,12 +28,17 @@ import android.widget.Toast;
 public class MateActivity extends AppCompatActivity {
 
     private FragmentManager manager;
+    private Toolbar toolBar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView navigation;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mate_main);
+        //initInstances();
         final PostMate postMateFragment = new PostMate();
         final AvailableMate availableMateFragment = new AvailableMate();
         final RequestsMate requestsMateFragment = new RequestsMate();
@@ -277,6 +283,58 @@ public class MateActivity extends AppCompatActivity {
 
 
 
+    }
+
+    /*private void initInstances(){
+        toolBar = (Toolbar) findViewById(R.id.act_toolbar);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        mToggle = new ActionBarDrawerToggle(this,drawerLayout,toolBar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        navigation = (NavigationView) findViewById(R.id.navigation);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.Home:
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.logout:
+                        Intent logout=new Intent(getApplicationContext(),SignIn.class);
+                        startActivity(logout);
+                        Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.DogMate:
+                        Intent dogMate = new Intent(getApplicationContext(), MateActivity.class);
+                        startActivity(dogMate);
+                        break;
+                    case R.id.history:
+                        Intent history = new Intent(getApplicationContext(),HistoryActivity.class);
+                        startActivity(history);
+                        break;
+                    case R.id.DogWalk:
+                        Intent dogWalk = new Intent(getApplicationContext(),WalkActivity.class);
+                        startActivity(dogWalk);
+                        break;
+
+                }
+                return false;
+            }
+        });
+    }*/
+
+    public void matePosted(Boolean resp)
+    {
+        if(resp)
+        {
+            Snackbar.make(findViewById(R.id.container),"Posted Successfully",Snackbar.LENGTH_SHORT).show();
+        }
+        else
+            Snackbar.make(findViewById(R.id.container),"Some Error Occured",Snackbar.LENGTH_SHORT).show();
     }
 
 
